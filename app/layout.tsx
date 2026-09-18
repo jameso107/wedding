@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
-import { Big_Shoulders, Big_Shoulders_Stencil, Homemade_Apple } from "next/font/google";
+import { Big_Shoulders_Stencil, Fraunces, Homemade_Apple } from "next/font/google";
 import "./globals.css";
 
-const display = Big_Shoulders({
+const display = Fraunces({
   subsets: ["latin"],
   variable: "--font-display",
+  style: ["normal", "italic"],
+  axes: ["SOFT", "WONK", "opsz"],
 });
 
 const stamp = Big_Shoulders_Stencil({
@@ -33,7 +35,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport = {
-  themeColor: "#6B1020",
+  themeColor: "#3A6F88",
   colorScheme: "light" as const,
 };
 

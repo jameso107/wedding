@@ -25,7 +25,7 @@ export function Postmark() {
       </defs>
       <g
         fill="none"
-        stroke="#6B1020"
+        stroke="#102C3C"
         strokeWidth="3.4"
         filter="url(#stamp-bite)"
       >
@@ -34,7 +34,7 @@ export function Postmark() {
         <circle cx="110" cy="110" r="58" strokeWidth="1.15" />
       </g>
       <g
-        fill="#6B1020"
+        fill="#102C3C"
         textAnchor="middle"
         filter="url(#stamp-bite)"
         style={{ fontFamily: "var(--font-stamp), sans-serif" }}

@@ -51,7 +51,7 @@ Open / undecided:
 - Couple: Hannah and James; the public lockup is Hannah + James. The wedding may also be referred to as the Oosterhouse wedding.
 - Domain and public name: oosterhouse.wedding.
 - Coastal theme.
-- Color scheme: light blue and dark maroon.
+- Color scheme: light blue and cream.
 - Animation is part of the identity, not decoration to strip later.
 
 ## Evidence on Hand

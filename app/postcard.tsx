@@ -139,7 +139,7 @@ export function Postcard() {
               <div className="flip-cue" aria-hidden="true">
                 <motion.p
                   className="flip-label"
-                  animate={reduceMotion ? { opacity: 1 } : { opacity: [0.55, 1, 0.55] }}
+                  animate={reduceMotion ? { opacity: 1 } : { opacity: [0.8, 1, 0.8] }}
                   transition={cueTransition}
                 >
                   click to flip
