@@ -1,0 +1,205 @@
+{
+  "title": "Choose the visual world",
+  "question": "The roll assigned Linen Lake Postcard. Keep it, take an alternate, or re-roll.",
+  "options": [
+    {
+      "id": "assigned",
+      "label": "Linen Lake Postcard",
+      "kicker": "THE ROLL",
+      "lineage": "mid-century Michigan linen lake postcards",
+      "thesis": "The save-the-date is a Gun Lake postcard you can flip, not a wedding homepage.",
+      "palette": ["#8EC8DC", "#6B1020", "#E7F3F7", "#1C1214"],
+      "materials": ["linen tooth", "circular date stamp", "handwritten verso", "warped card stock"],
+      "viewport": "One postcard fills the screen: lake face, James + Hannah as addressee, maroon JUL 4 2027 postmark, Bay Pointe Inn as caption; pointer tilts, click flips.",
+      "risk": "Reads like a gift-shop souvenir if the type turns cute or the lake photo is generic stock.",
+      "raised": [
+        {
+          "from": "challenger-indoor-sun",
+          "raise": "Hall-scale object: the card is the entire first viewport, edge to edge, with no site chrome."
+        },
+        {
+          "from": "challenger-orizuru",
+          "raise": "One-sheet evidence: linen grain, stamp bite, and handwriting stay visible as construction."
+        },
+        {
+          "from": "challenger-flyers",
+          "raise": "Fighting scale: the names and July 4, 2027 outrank the landscape caption."
+        },
+        {
+          "from": "challenger-cutting",
+          "raise": "Physical mark and snap: the date is the postmark; the flip carries inertia and settles like card stock."
+        },
+        {
+          "from": "challenger-ebru",
+          "raise": "Displacing fields: lake blue and maroon never mix; water owns the face, maroon owns stamp and verso ink."
+        }
+      ],
+      "comp": ".impeccable/mocks/decision/assigned.webp",
+      "wireframe": {
+        "cols": 12,
+        "rows": 8,
+        "regions": [
+          { "label": "linen border", "x": 0, "y": 0, "w": 12, "h": 8 },
+          { "label": "Gun Lake face", "x": 1, "y": 1, "w": 10, "h": 5, "accent": true },
+          { "label": "JUL 4 2027 postmark", "x": 8, "y": 1, "w": 3, "h": 2 },
+          { "label": "James + Hannah", "x": 1, "y": 6, "w": 7, "h": 1, "accent": true },
+          { "label": "Bay Pointe Inn", "x": 1, "y": 7, "w": 5, "h": 1 }
+        ]
+      }
+    },
+    {
+      "id": "model-pick",
+      "label": "Gun Lake Chart Plate",
+      "kicker": "IMPECCABLE’S PICK",
+      "lineage": "hydrographic lake charts and soundings",
+      "thesis": "The announcement is a chart of Gun Lake, with the wedding as the marked sounding.",
+      "palette": ["#D6EBF3", "#6B1020", "#4A8FB0", "#1A2A32"],
+      "materials": ["engraved neatline", "sounding figures", "compass rose", "chart linen"],
+      "viewport": "A full-bleed chart plate: James + Hannah in the title block, Bay Pointe Inn as a maroon X on the south shore, July 4 2027 in the neatline.",
+      "risk": "This is the clever-coastal landing most lake weddings pick; familiar, and effective if you want that.",
+      "comp": ".impeccable/mocks/decision/model-pick.webp",
+      "wireframe": {
+        "cols": 12,
+        "rows": 8,
+        "regions": [
+          { "label": "chart plate", "x": 0, "y": 0, "w": 12, "h": 8, "accent": true },
+          { "label": "James + Hannah title", "x": 0, "y": 0, "w": 7, "h": 1 },
+          { "label": "compass rose", "x": 9, "y": 0, "w": 3, "h": 3 },
+          { "label": "Gun Lake soundings", "x": 1, "y": 2, "w": 9, "h": 5 },
+          { "label": "Bay Pointe Inn X", "x": 6, "y": 4, "w": 3, "h": 2, "accent": true },
+          { "label": "JUL 4 2027 neatline", "x": 0, "y": 7, "w": 12, "h": 1 }
+        ]
+      }
+    },
+    {
+      "id": "challenger-star-atlas",
+      "label": "Fourth-of-July Star Atlas",
+      "verdict": "competitive",
+      "lineage": "celestial star atlas charts",
+      "thesis": "July 4 over Gun Lake as a star atlas: James and Hannah are the constellation, the date is the ringed object.",
+      "palette": ["#2A0A12", "#C5E6F0", "#8B1D2C", "#6B1020"],
+      "materials": ["chalk-white stars", "hairline RA/Dec grid", "faint mythic figure", "night-vision maroon reticle"],
+      "viewport": "A night plate fills the screen; the couple’s names label the figure; a maroon reticle locks JUL 4 2027; Bay Pointe Inn sits in the plate margin.",
+      "case": "Holds identification: a Michigan lake night and fireworks sky is this audience’s real scene. Loses clarity: coordinates can bury the inn unless the date stays the ringed object.",
+      "risk": "Reads as an astronomy app if the venue and date are not the object under the eye.",
+      "comp": ".impeccable/mocks/decision/challenger-star-atlas.webp",
+      "hero": "https://impeccable.style/worlds/cards/notation-diagram-systems-star-atlas-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/notation-diagram-systems-star-atlas.webp",
+      "wireframe": {
+        "cols": 12,
+        "rows": 8,
+        "regions": [
+          { "label": "night sky", "x": 0, "y": 0, "w": 12, "h": 8, "accent": true },
+          { "label": "James + Hannah constellation", "x": 3, "y": 1, "w": 6, "h": 5 },
+          { "label": "reticle JUL 4 2027", "x": 7, "y": 3, "w": 3, "h": 2, "accent": true },
+          { "label": "Bay Pointe Inn plate", "x": 0, "y": 7, "w": 5, "h": 1 },
+          { "label": "coordinates", "x": 8, "y": 7, "w": 4, "h": 1 }
+        ]
+      }
+    },
+    {
+      "id": "challenger-indoor-sun",
+      "label": "Indoor Weather Sun",
+      "verdict": "declined",
+      "lineage": "monofrequency indoor sun in a mirrored hall",
+      "thesis": "A maroon-dusk sun doubled in the lake, names as shore silhouettes.",
+      "palette": ["#6B1020", "#8EC8DC", "#1C1214", "#C45A4A"],
+      "materials": ["haze", "mirrored doubling", "silhouette ink"],
+      "viewport": "One vast horizontal band; a half sun on the far shore completes itself in the water.",
+      "case": "Loses both: guests do not identify with an art-hall sun, and a disc does not make the inn or the date unmistakable.",
+      "kept": "Total environmental commitment — the object owns the whole viewport.",
+      "risk": "Beautiful and mute: a guest cannot calendar a sun.",
+      "hero": "https://impeccable.style/worlds/cards/light-shadow-caustics-indoor-weather-sun-hero.webp",
+      "comp": ".impeccable/mocks/decision/challenger-indoor-sun.webp"
+    },
+    {
+      "id": "challenger-orizuru",
+      "label": "Orizuru Fold Sequence",
+      "verdict": "declined",
+      "lineage": "thirty-two folds of a single uncut sheet into a crane",
+      "thesis": "A maroon-and-blue square folded until the date stands as a crane.",
+      "palette": ["#6B1020", "#8EC8DC", "#F4F7F8", "#1C1214"],
+      "materials": ["washi fiber", "crease white", "sumi step marks"],
+      "viewport": "A centered square and a numbered fold column; the finished bird holds July 4.",
+      "case": "Loses both: folding hides the facts, and origami is not this family’s ritual.",
+      "kept": "One continuous sheet with every prior crease still visible.",
+      "risk": "Parents will not hunt a date through thirty-two steps.",
+      "hero": "https://impeccable.style/worlds/cards/paper-folds-pleats-deployable-orizuru-crane-sequence.webp",
+      "comp": ".impeccable/mocks/decision/challenger-orizuru.webp"
+    },
+    {
+      "id": "challenger-flyers",
+      "label": "Torn Flyer Wall",
+      "verdict": "declined",
+      "lineage": "club walls of stapled photocopied flyers",
+      "thesis": "Save-the-dates stapled over save-the-dates, torn back through earlier nights.",
+      "palette": ["#6B1020", "#8EC8DC", "#111111", "#E7F3F7"],
+      "materials": ["photocopy black", "staple holes", "torn fluorescent stock"],
+      "viewport": "Heavy display caps at four scales; only the newest sheet fully legible.",
+      "case": "Loses both: there is only one night, and a club wall is not an invitation parents will trust.",
+      "kept": "Newest sheet fully legible at a scale that fights the frame.",
+      "risk": "Reads as a basement show, not a lake wedding.",
+      "hero": "https://impeccable.style/worlds/cards/posters-covers-sleeves-torn-flyer-photocopy-wall-hero.webp",
+      "comp": ".impeccable/mocks/decision/challenger-flyers.webp"
+    },
+    {
+      "id": "challenger-cutting",
+      "label": "Cutting-Bench Rail",
+      "verdict": "declined",
+      "lineage": "film cutting bench select rail",
+      "thesis": "The weekend as frames on a perforated rail, July 4 flagged with tape.",
+      "palette": ["#6B1020", "#8EC8DC", "#0A0A0A", "#E7F3F7"],
+      "materials": ["perforation pitch", "folded tape flag", "coarse grain"],
+      "viewport": "A rail across the sheet; the flagged frame is the date; trims hang below.",
+      "case": "Loses both: film-bench grammar is not a guest’s world, and a postmark is already a clearer physical mark.",
+      "kept": "Inertial snap to a physical mark, never between frames.",
+      "risk": "Looks like an editor’s tool wearing wedding copy.",
+      "hero": "https://impeccable.style/worlds/cards/operate-a-cutting-bench-select-rail-hero.webp",
+      "comp": ".impeccable/mocks/decision/challenger-cutting.webp"
+    },
+    {
+      "id": "challenger-ebru",
+      "label": "Ebru Pigment Bath",
+      "verdict": "declined",
+      "lineage": "floated pigment lifted onto paper in one contact",
+      "thesis": "Light blue and maroon pigments combed on a bath, lifted once as the only copy.",
+      "palette": ["#8EC8DC", "#6B1020", "#E7F3F7", "#1C1214"],
+      "materials": ["thickened bath", "unmixed pigment rings", "sized paper"],
+      "viewport": "A full-bleed bath; one lift reveals the names and date in the combed figure.",
+      "case": "Loses both: marbling can swallow the date, and the craft is not West Michigan lake culture.",
+      "kept": "Colors displace, never mix, at page scale.",
+      "risk": "A guest remembers the swirl and forgets the inn.",
+      "hero": "https://impeccable.style/worlds/cards/medium-native-ebru-floated-pigment-hero.webp",
+      "comp": ".impeccable/mocks/decision/challenger-ebru.webp"
+    }
+  ],
+  "reroll": {
+    "registers": ["safer", "bolder"]
+  },
+  "buildPath": {
+    "value": "code",
+    "toggle": true
+  },
+  "canon": true,
+  "canonCard": {
+    "label": "The category standard",
+    "thesis": "Centered names, a coastal wash, Save the Date, the date, the inn — the page every wedding site ships.",
+    "palette": ["#C5E4F0", "#FFFFFF", "#6B1020", "#1C1214"],
+    "materials": ["script lockup", "soft wave", "countdown"],
+    "viewport": "A conventional hero: names, date, Bay Pointe Inn, maybe a countdown.",
+    "risk": "Indistinguishable from a coastal Canva template, by design.",
+    "comp": ".impeccable/mocks/decision/canon.webp",
+    "wireframe": {
+      "cols": 12,
+      "rows": 8,
+      "regions": [
+        { "label": "nav", "x": 0, "y": 0, "w": 12, "h": 1 },
+        { "label": "names", "x": 2, "y": 2, "w": 8, "h": 2, "accent": true },
+        { "label": "photo", "x": 3, "y": 4, "w": 6, "h": 2 },
+        { "label": "July 4 2027", "x": 3, "y": 6, "w": 6, "h": 1, "accent": true },
+        { "label": "Bay Pointe Inn", "x": 3, "y": 7, "w": 6, "h": 1 }
+      ]
+    }
+  },
+  "steer": true
+}
