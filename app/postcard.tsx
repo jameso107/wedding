@@ -147,13 +147,15 @@ export function Postcard() {
                 transition={cueTransition}
               >
                 <span className="dog-ear" />
-                <motion.p
-                  className="flip-label"
-                  animate={reduceMotion ? { opacity: 1 } : { opacity: [0.8, 1, 0.8] }}
-                  transition={cueTransition}
-                >
-                  click to flip
-                </motion.p>
+                <span className="flip-anchor">
+                  <motion.p
+                    className="flip-label"
+                    animate={reduceMotion ? { opacity: 1 } : { opacity: [0.8, 1, 0.8] }}
+                    transition={cueTransition}
+                  >
+                    click to flip
+                  </motion.p>
+                </span>
               </motion.div>
             ) : null}
           </div>
