@@ -136,7 +136,17 @@ export function Postcard() {
               </span>
             </h1>
             {!isFlipped ? (
-              <div className="flip-cue" aria-hidden="true">
+              <motion.div
+                className="flip-cue"
+                aria-hidden="true"
+                animate={
+                  reduceMotion
+                    ? { y: 0, rotate: 0 }
+                    : { y: [0, -7, 0], rotate: [0, -7, 0] }
+                }
+                transition={cueTransition}
+              >
+                <span className="dog-ear" />
                 <motion.p
                   className="flip-label"
                   animate={reduceMotion ? { opacity: 1 } : { opacity: [0.8, 1, 0.8] }}
@@ -144,16 +154,7 @@ export function Postcard() {
                 >
                   click to flip
                 </motion.p>
-                <motion.span
-                  className="dog-ear"
-                  animate={
-                    reduceMotion
-                      ? { y: 0 }
-                      : { y: [0, -7, 0], rotate: [0, -7, 0] }
-                  }
-                  transition={cueTransition}
-                />
-              </div>
+              </motion.div>
             ) : null}
           </div>
         </div>
