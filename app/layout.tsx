@@ -1,23 +1,23 @@
 import type { Metadata } from "next";
-import { Big_Shoulders_Stencil, Fraunces, Homemade_Apple } from "next/font/google";
+import { EB_Garamond, Jost, Pinyon_Script } from "next/font/google";
 import "./globals.css";
 
-const display = Fraunces({
+const serif = EB_Garamond({
   subsets: ["latin"],
-  variable: "--font-display",
+  variable: "--font-serif",
   style: ["normal", "italic"],
-  axes: ["SOFT", "WONK", "opsz"],
 });
 
-const stamp = Big_Shoulders_Stencil({
+const sans = Jost({
   subsets: ["latin"],
-  variable: "--font-stamp",
+  weight: ["300", "400"],
+  variable: "--font-sans",
 });
 
-const hand = Homemade_Apple({
+const script = Pinyon_Script({
   subsets: ["latin"],
   weight: "400",
-  variable: "--font-hand",
+  variable: "--font-script",
 });
 
 export const metadata: Metadata = {
@@ -43,9 +43,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${display.variable} ${stamp.variable} ${hand.variable} h-full`}
+      className={`${serif.variable} ${sans.variable} ${script.variable}`}
     >
-      <body className="h-full">{children}</body>
+      <body>{children}</body>
     </html>
   );
 }
