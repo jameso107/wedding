@@ -133,7 +133,7 @@ export default async function TasksPage({ searchParams }: PageProps<"/planning/t
                     ) : null}
                   </Link>
                   <span className="pl-row-meta">
-                    {t.status === "doing" ? <StatusTag status="doing" /> : null}
+                    {t.status === "doing" || t.status === "waiting" ? <StatusTag status={t.status} /> : null}
                     <PersonTag who={t.assignee} />
                     <DueTag date={t.due_date} done={t.status === "done"} />
                   </span>

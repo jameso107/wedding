@@ -490,6 +490,11 @@ a.pl-stat:hover {
   color: var(--soon);
 }
 
+.pl-tag-waiting {
+  background: var(--late-wash);
+  color: var(--late);
+}
+
 .pl-tag-contacted,
 .pl-tag-doing {
   background: var(--james-wash);
@@ -1511,6 +1516,203 @@ a.pl-row-main:hover .pl-row-title {
   color: var(--paper);
   text-decoration: underline;
   text-underline-offset: 3px;
+}
+
+/* ---- kanban board ------------------------------------------------------- */
+
+.pl-kanban {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(220px, 1fr));
+  gap: 12px;
+  align-items: start;
+  overflow-x: auto;
+  padding-bottom: 8px;
+}
+
+.pl-kanban-col {
+  display: flex;
+  flex-direction: column;
+  min-height: 60vh;
+  padding: 12px 10px 14px;
+  border-radius: 8px;
+  background: var(--sand);
+  border: 1px solid transparent;
+  transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.pl-kanban-col.is-over {
+  background: var(--james-wash);
+  border-color: rgb(58 111 136 / 0.35);
+  box-shadow: inset 0 0 0 1px rgb(58 111 136 / 0.15);
+}
+
+.pl-kanban-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 4px;
+}
+
+.pl-kanban-head h2 {
+  margin: 0;
+  font-weight: 400;
+  font-size: 19px;
+  font-style: italic;
+}
+
+.pl-kanban-head h2::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 8px;
+  border-radius: 50%;
+  vertical-align: 2px;
+  background: var(--line-strong);
+}
+
+.pl-kanban-todo .pl-kanban-head h2::before {
+  background: var(--lake);
+}
+
+.pl-kanban-doing .pl-kanban-head h2::before {
+  background: var(--soon);
+}
+
+.pl-kanban-waiting .pl-kanban-head h2::before {
+  background: var(--late);
+}
+
+.pl-kanban-done .pl-kanban-head h2::before {
+  background: var(--done);
+}
+
+.pl-kanban-hint {
+  margin: 2px 4px 10px;
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--muted);
+}
+
+.pl-kanban-cards {
+  display: grid;
+  gap: 8px;
+  flex: 1;
+  align-content: start;
+}
+
+.pl-kanban-slot {
+  touch-action: manipulation;
+  cursor: grab;
+  border-radius: 6px;
+}
+
+.pl-kanban-slot:focus-visible {
+  outline: 2px solid var(--lake);
+  outline-offset: 2px;
+}
+
+.pl-kanban-slot > a {
+  display: block;
+  text-decoration: none;
+}
+
+.pl-kanban-slot.is-dragging {
+  opacity: 0.35;
+}
+
+.pl-kcard {
+  display: grid;
+  gap: 6px;
+  padding: 12px 13px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fffdf8;
+  box-shadow: 0 1px 0 rgb(29 52 66 / 0.04);
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+}
+
+.pl-kanban-slot:hover .pl-kcard {
+  border-color: var(--line-strong);
+  box-shadow: 0 8px 18px -14px rgb(29 52 66 / 0.55);
+}
+
+.pl-kcard strong {
+  font-weight: 400;
+  font-size: 16.5px;
+  line-height: 1.3;
+}
+
+.pl-kcard .pl-row-sub {
+  white-space: normal;
+}
+
+.pl-kcard .pl-row-meta {
+  justify-content: flex-start;
+}
+
+.pl-kcard.is-done strong {
+  color: var(--muted);
+  text-decoration: line-through;
+  text-decoration-color: var(--line-strong);
+}
+
+.pl-kcard.is-lifted {
+  cursor: grabbing;
+  transform: rotate(2deg) scale(1.02);
+  border-color: var(--lake);
+  box-shadow: 0 18px 36px -16px rgb(29 52 66 / 0.55);
+}
+
+.pl-kanban-add {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.pl-kanban-add .pl-input {
+  min-height: 36px;
+  padding: 6px 10px;
+  font-size: 15px;
+  background: #fffdf8;
+}
+
+.pl-kanban-add .pl-btn {
+  min-height: 36px;
+  padding: 0 12px;
+  font-size: 11px;
+}
+
+.pl-kanban-empty {
+  margin: 0;
+  padding: 18px 8px;
+  border: 1px dashed var(--line-strong);
+  border-radius: 6px;
+  text-align: center;
+  font-style: italic;
+  font-size: 15px;
+  color: var(--muted);
+}
+
+.pl-kanban-more {
+  display: block;
+  padding: 6px 4px;
+}
+
+@media (max-width: 820px) {
+  .pl-kanban {
+    grid-template-columns: repeat(5, minmax(240px, 82vw));
+    margin-right: -16px;
+    padding-right: 16px;
+    scroll-snap-type: x mandatory;
+  }
+
+  .pl-kanban-col {
+    min-height: 50vh;
+    scroll-snap-align: start;
+  }
 }
 
 /* ---- motion ------------------------------------------------------------- */

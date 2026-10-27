@@ -15,6 +15,7 @@ import {
 } from "./db";
 import { WEDDING_DAY, daysBetween, personName, today } from "./format";
 import type { Person } from "./session";
+import { TASK_STAGES, TASK_STATUSES } from "./stages";
 
 // MCP server for the planning board. One URL per person
 // (planning.oosterhouse.wedding/mcp/hannah or /mcp/james) so every change
@@ -92,6 +93,7 @@ export function planningServer(me: Person) {
         `You are acting for ${name}. "Me" or "I" means ${name}; "${other}" is the partner. Assign with "hannah", "james", or "both".`,
         `The wedding is Sunday, July 4, 2027 at Bay Pointe Inn on Gun Lake, Michigan. Today is ${today()}.`,
         `Dates are YYYY-MM-DD. Money is in US dollars.`,
+        `Tasks move through Kanban stages: ${TASK_STAGES.map((s) => `${s.id} (${s.label}: ${s.hint})`).join(", ")}. New tasks without an assignee start in backlog; with one, in todo.`,
         `Tasks can have a start_date and due_date; the timeline draws them as bars. Link follow-up tasks to the decision they come from with decision_id.`,
         `Look things up with the list_* tools to get ids before updating. Pass null to clear a field. Confirm with the user before deleting several things at once.`,
       ].join("\n"),
@@ -126,6 +128,9 @@ export function planningServer(me: Person) {
         days_to_go: daysBetween(now, WEDDING_DAY),
         tasks: {
           open: open.length,
+          by_stage: Object.fromEntries(
+            TASK_STAGES.map((s) => [s.id, tasks.filter((t) => t.status === s.id).length]),
+          ),
           done: tasks.length - open.length,
           overdue: open.filter((t) => t.due_date && t.due_date < now).map(taskOut),
           next_up: open.filter((t) => t.due_date && t.due_date >= now).slice(0, 8).map(taskOut),
@@ -173,7 +178,10 @@ export function planningServer(me: Person) {
   const taskFields = {
     notes: z.string().nullable().optional(),
     assignee: person.nullable().optional().describe("hannah, james, both, or null for unassigned"),
-    status: z.enum(["todo", "doing", "done"]).optional(),
+    status: z
+      .enum(TASK_STATUSES)
+      .optional()
+      .describe("backlog, todo (shown as 'Assigned'), doing (in progress), waiting (on others), or done"),
     start_date: date.nullable().optional().describe("When work on it begins (draws a bar on the timeline)"),
     due_date: date.nullable().optional(),
     vendor_id: id.nullable().optional(),

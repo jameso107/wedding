@@ -45,8 +45,10 @@ export function DueTag({ date, done }: { date: string | null; done?: boolean }) 
 }
 
 const STATUS_LABEL: Record<string, string> = {
-  todo: "To do",
+  backlog: "Backlog",
+  todo: "Assigned",
   doing: "In progress",
+  waiting: "Waiting",
   done: "Done",
   open: "Open",
   leaning: "Leaning",

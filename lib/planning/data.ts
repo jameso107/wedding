@@ -65,6 +65,7 @@ export async function createTask(actor: Actor, input: TaskInput & { title: strin
       .from("wedding_tasks")
       .insert({
         ...defined(input),
+        status: input.status ?? (input.assignee ? "todo" : "backlog"),
         created_by: actor.person,
         completed_at: input.status === "done" ? now() : null,
       })
@@ -105,6 +106,12 @@ export async function updateTask(actor: Actor, id: string, patch: TaskInput) {
     await log(actor, `finished “${task.title}”`, `/tasks/${id}`);
   } else if (task.assignee && task.assignee !== before.assignee && task.assignee !== actor.person) {
     await log(actor, `handed “${task.title}” to ${personName(task.assignee)}`, `/tasks/${id}`);
+  } else if (task.status === "doing" && before.status !== "doing") {
+    await log(actor, `started “${task.title}”`, `/tasks/${id}`);
+  } else if (task.status === "waiting" && before.status !== "waiting") {
+    await log(actor, `is waiting on others for “${task.title}”`, `/tasks/${id}`);
+  } else if (task.assignee === actor.person && before.assignee !== actor.person) {
+    await log(actor, `picked up “${task.title}”`, `/tasks/${id}`);
   } else if (actor.via === "claude") {
     await log(actor, `updated “${task.title}”`, `/tasks/${id}`);
   }

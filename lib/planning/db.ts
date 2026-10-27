@@ -1,8 +1,9 @@
 import "server-only";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import type { TaskStatus } from "./stages";
 
+export type { TaskStatus };
 export type Assignee = "hannah" | "james" | "both";
-export type TaskStatus = "todo" | "doing" | "done";
 export type VendorStatus =
   | "researching"
   | "contacted"

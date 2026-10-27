@@ -7,6 +7,7 @@ import type { Assignee } from "@/lib/planning/db";
 import * as data from "@/lib/planning/data";
 import { today } from "@/lib/planning/format";
 import { SESSION_COOKIE, SESSION_DAYS, isPerson } from "@/lib/planning/session";
+import { TASK_STATUSES, type TaskStatus } from "@/lib/planning/stages";
 
 // Actions never call redirect(): Next renders the target inside the action
 // request, skipping proxy.ts, so "/" would render the public site. Callers
@@ -83,7 +84,6 @@ export async function logout() {
 
 // ---- tasks ----------------------------------------------------------------
 
-const TASK_STATUSES = ["todo", "doing", "done"] as const;
 
 export async function createTask(form: FormData) {
   await data.createTask(await actor(), {
@@ -115,6 +115,14 @@ export async function toggleTask(form: FormData) {
   await data.updateTask(await actor(), required(form, "id"), {
     status: text(form, "done") === "true" ? "done" : "todo",
   });
+  refresh();
+}
+
+// Kanban drag: move a task to another stage. Dropping an unassigned task
+// into "Assigned" gives it to whoever moved it.
+export async function moveTask(id: string, status: TaskStatus, claim = false) {
+  const me = await actor();
+  await data.updateTask(me, id, { status, ...(claim ? { assignee: me.person } : {}) });
   refresh();
 }
 

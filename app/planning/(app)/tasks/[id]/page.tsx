@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { requirePerson } from "@/lib/planning/auth";
 import { db, rows, type Decision, type Task, type Vendor } from "@/lib/planning/db";
 import { formatDate, personName, timeAgo } from "@/lib/planning/format";
+import { TASK_STAGES } from "@/lib/planning/stages";
 import { deleteTask, updateTask } from "../../../actions";
 import { ActionForm, ConfirmButton, SubmitButton } from "../../../client";
 import {
@@ -49,9 +50,11 @@ export default async function TaskPage({ params }: PageProps<"/planning/tasks/[i
             </Field>
             <Field label="Status">
               <select className="pl-select" name="status" defaultValue={task.status}>
-                <option value="todo">To do</option>
-                <option value="doing">In progress</option>
-                <option value="done">Done</option>
+                {TASK_STAGES.map((s) => (
+                  <option key={s.id} value={s.id}>
+                    {s.label}
+                  </option>
+                ))}
               </select>
             </Field>
           </div>

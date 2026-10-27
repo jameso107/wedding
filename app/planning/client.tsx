@@ -9,6 +9,7 @@ import { login, logout, toggleTask } from "./actions";
 const NAV = [
   { href: "/", label: "Overview" },
   { href: "/timeline", label: "Timeline" },
+  { href: "/board", label: "Board" },
   { href: "/tasks", label: "Tasks" },
   { href: "/decisions", label: "Decisions" },
   { href: "/vendors", label: "Vendors" },
