@@ -4,7 +4,7 @@ import { db, rows, type Task } from "@/lib/planning/db";
 import { monthLabel, personName, today } from "@/lib/planning/format";
 import { createTask } from "../../actions";
 import { SubmitButton, TaskCheck } from "../../client";
-import { AssigneeSelect, DueTag, PageHead, PersonTag, StatusTag } from "../../ui";
+import { AssigneeSelect, DueTag, PageHead, PersonTag, Seg, StatusTag } from "../../ui";
 
 export const metadata = { title: "Tasks" };
 
@@ -108,8 +108,8 @@ export default async function TasksPage({ searchParams }: PageProps<"/planning/t
       </form>
 
       <div className="pl-filters">
-        <Seg param="who" options={WHO} value={who} other={{ show }} />
-        <Seg param="show" options={SHOW} value={show} other={{ who }} />
+        <Seg path="/tasks" param="who" options={WHO} value={who} other={{ show }} />
+        <Seg path="/tasks" param="show" options={SHOW} value={show} other={{ who }} />
       </div>
 
       {ordered.length ? (
@@ -151,31 +151,6 @@ export default async function TasksPage({ searchParams }: PageProps<"/planning/t
               : `No tasks here${who !== "all" ? ` for ${who === "me" ? "you" : personName(who)}` : ""}.`}
         </p>
       )}
-    </div>
-  );
-}
-
-function Seg({
-  param,
-  options,
-  value,
-  other,
-}: {
-  param: string;
-  options: readonly (readonly [string, string])[];
-  value: string;
-  other: Record<string, string>;
-}) {
-  return (
-    <div className="pl-seg" role="group">
-      {options.map(([key, label]) => {
-        const q = new URLSearchParams({ ...other, [param]: key });
-        return (
-          <Link key={key} href={`/tasks?${q}`} aria-current={key === value ? "true" : undefined} scroll={false}>
-            {label}
-          </Link>
-        );
-      })}
     </div>
   );
 }

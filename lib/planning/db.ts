@@ -17,6 +17,7 @@ export type Task = {
   notes: string | null;
   assignee: Assignee | null;
   status: TaskStatus;
+  start_date: string | null;
   due_date: string | null;
   vendor_id: string | null;
   decision_id: string | null;

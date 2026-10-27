@@ -18,11 +18,18 @@ export function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Send first-time visitors to pick Hannah or James.
+  // No OAuth here; a 404 tells MCP clients to connect without auth.
+  if (pathname.startsWith("/.well-known/")) {
+    return new NextResponse(null, { status: 404 });
+  }
+
+  // Send first-time visitors to pick Hannah or James. The MCP endpoints
+  // (/mcp/hannah, /mcp/james) carry the person in the URL instead.
   const person = readSessionValue(
     request.cookies.get(SESSION_COOKIE)?.value,
   );
-  if (!person && pathname !== "/login") {
+  const isMcp = pathname.startsWith("/mcp/");
+  if (!person && !isMcp && pathname !== "/login") {
     return NextResponse.redirect(new URL("/login", request.url));
   }
   if (person && pathname === "/login") {

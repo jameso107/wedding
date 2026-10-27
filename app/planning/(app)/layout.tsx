@@ -39,6 +39,9 @@ export default async function AppLayout({ children }: LayoutProps<"/planning">) 
             <strong>{days > 0 ? days : "Today"}</strong>
             <span>{days > 0 ? "days to July 4" : "is the day"}</span>
           </div>
+          <Link href="/connect" className="pl-side-link">
+            ✦ Connect Claude
+          </Link>
           <div className="pl-whoami">
             <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <Avatar who={me} />

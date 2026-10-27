@@ -8,6 +8,7 @@ import { login, logout, toggleTask } from "./actions";
 
 const NAV = [
   { href: "/", label: "Overview" },
+  { href: "/timeline", label: "Timeline" },
   { href: "/tasks", label: "Tasks" },
   { href: "/decisions", label: "Decisions" },
   { href: "/vendors", label: "Vendors" },
@@ -189,5 +190,28 @@ export function LogoutButton() {
     >
       Switch person
     </button>
+  );
+}
+
+export function CopyField({ label, value }: { label: string; value: string }) {
+  const [copied, setCopied] = useState(false);
+  return (
+    <div className="pl-field">
+      <span className="pl-label">{label}</span>
+      <div className="pl-copy">
+        <input className="pl-input" value={value} readOnly onFocus={(e) => e.currentTarget.select()} />
+        <button
+          type="button"
+          className="pl-btn"
+          onClick={async () => {
+            await navigator.clipboard.writeText(value);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 1600);
+          }}
+        >
+          {copied ? "Copied" : "Copy"}
+        </button>
+      </div>
+    </div>
   );
 }

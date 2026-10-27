@@ -176,3 +176,30 @@ export function BackLink({ href, children }: { href: string; children: React.Rea
     </Link>
   );
 }
+
+export function Seg({
+  path,
+  param,
+  options,
+  value,
+  other,
+}: {
+  path: string;
+  param: string;
+  options: readonly (readonly [string, string])[];
+  value: string;
+  other: Record<string, string>;
+}) {
+  return (
+    <div className="pl-seg" role="group">
+      {options.map(([key, label]) => {
+        const q = new URLSearchParams({ ...other, [param]: key });
+        return (
+          <Link key={key} href={`${path}?${q}`} aria-current={key === value ? "true" : undefined} scroll={false}>
+            {label}
+          </Link>
+        );
+      })}
+    </div>
+  );
+}

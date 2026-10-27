@@ -41,6 +41,9 @@ export default async function TaskPage({ params }: PageProps<"/planning/tasks/[i
             <Field label="Who">
               <AssigneeSelect name="assignee" value={task.assignee} />
             </Field>
+            <Field label="Start">
+              <input className="pl-input" type="date" name="start_date" defaultValue={task.start_date ?? ""} />
+            </Field>
             <Field label="Due">
               <input className="pl-input" type="date" name="due_date" defaultValue={task.due_date ?? ""} />
             </Field>
