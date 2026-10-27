@@ -1,0 +1,7 @@
+# Not needed to build the site; keeps CLI deploys small.
+.impeccable
+.claude
+supabase
+.env*
+!.env.example
+*.tsbuildinfo
