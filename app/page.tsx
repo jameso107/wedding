@@ -2,6 +2,7 @@ import type { CSSProperties } from "react";
 import Image from "next/image";
 import bayPointe from "../public/images/bay-pointe.jpg";
 import event from "./event.json";
+import { Rsvp } from "./rsvp";
 
 export default function Home() {
   return (
@@ -38,6 +39,9 @@ export default function Home() {
           <p className="more rise" style={{ "--d": "1s" } as CSSProperties}>
             More information to follow
           </p>
+          <div className="rise" style={{ "--d": "1.15s" } as CSSProperties}>
+            <Rsvp />
+          </div>
         </article>
       </main>
     </>
