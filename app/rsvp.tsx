@@ -72,7 +72,7 @@ export function Rsvp() {
               </label>
               <label>
                 <input type="radio" name="attending" value="no" />
-                <span>I can&rsquo;t make it</span>
+                <span>Unfortunately, I can&rsquo;t make it</span>
               </label>
             </fieldset>
 
