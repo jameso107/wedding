@@ -8,10 +8,6 @@ import { AssigneeSelect, DueTag, PageHead, PersonTag, Seg, StatusTag } from "../
 
 export const metadata = { title: "Tasks" };
 
-type Row = Task & {
-  vendor: { name: string } | null;
-  decision: { title: string } | null;
-};
 
 const WHO = [
   ["all", "Everyone"],
@@ -35,10 +31,10 @@ export default async function TasksPage({ searchParams }: PageProps<"/planning/t
   const show = SHOW.some(([k]) => k === params.show) ? String(params.show) : "open";
   const now = today();
 
-  const all = await rows<Row[]>(
+  const all = await rows<Task[]>(
     db()
       .from("wedding_tasks")
-      .select("*, vendor:wedding_vendors(name), decision:wedding_decisions(title)")
+      .select("*")
       .order("due_date", { nullsFirst: false })
       .order("created_at"),
   );
@@ -61,7 +57,7 @@ export default async function TasksPage({ searchParams }: PageProps<"/planning/t
     tasks.sort((a, b) => (b.completed_at ?? "").localeCompare(a.completed_at ?? ""));
   }
 
-  const groups = new Map<string, { late?: boolean; tasks: Row[] }>();
+  const groups = new Map<string, { late?: boolean; tasks: Task[] }>();
   for (const t of tasks) {
     const key =
       show === "done"
@@ -124,13 +120,7 @@ export default async function TasksPage({ searchParams }: PageProps<"/planning/t
                   <TaskCheck id={t.id} done={t.status === "done"} title={t.title} />
                   <Link href={`/tasks/${t.id}`} className="pl-row-main">
                     <span className="pl-row-title">{t.title}</span>
-                    {t.notes || t.vendor || t.decision ? (
-                      <span className="pl-row-sub">
-                        {[t.vendor?.name, t.decision ? `Decision: ${t.decision.title}` : null, t.notes]
-                          .filter(Boolean)
-                          .join(" · ")}
-                      </span>
-                    ) : null}
+                    {t.notes ? <span className="pl-row-sub">{t.notes}</span> : null}
                   </Link>
                   <span className="pl-row-meta">
                     {t.status === "doing" || t.status === "waiting" ? <StatusTag status={t.status} /> : null}

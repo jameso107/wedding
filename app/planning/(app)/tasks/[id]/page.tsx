@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { requirePerson } from "@/lib/planning/auth";
-import { db, rows, type Decision, type Task, type Vendor } from "@/lib/planning/db";
+import { db, type Task } from "@/lib/planning/db";
 import { formatDate, personName, timeAgo } from "@/lib/planning/format";
 import { TASK_STAGES } from "@/lib/planning/stages";
 import { deleteTask, updateTask } from "../../../actions";
@@ -8,12 +8,10 @@ import { ActionForm, ConfirmButton, SubmitButton } from "../../../client";
 import {
   AssigneeSelect,
   BackLink,
-  DecisionSelect,
   DueTag,
   Field,
   PersonTag,
   StatusTag,
-  VendorSelect,
 } from "../../../ui";
 
 export const metadata = { title: "Task" };
@@ -23,11 +21,6 @@ export default async function TaskPage({ params }: PageProps<"/planning/tasks/[i
   const { id } = await params;
   const { data: task } = await db().from("wedding_tasks").select("*").eq("id", id).maybeSingle<Task>();
   if (!task) notFound();
-
-  const [vendors, decisions] = await Promise.all([
-    rows<Pick<Vendor, "id" | "name">[]>(db().from("wedding_vendors").select("id, name").order("name")),
-    rows<Pick<Decision, "id" | "title">[]>(db().from("wedding_decisions").select("id, title").order("title")),
-  ]);
 
   return (
     <div className="pl-page">
@@ -56,14 +49,6 @@ export default async function TaskPage({ params }: PageProps<"/planning/tasks/[i
                   </option>
                 ))}
               </select>
-            </Field>
-          </div>
-          <div className="pl-form-row">
-            <Field label="Vendor">
-              <VendorSelect vendors={vendors} value={task.vendor_id} />
-            </Field>
-            <Field label="Decision">
-              <DecisionSelect decisions={decisions} value={task.decision_id} />
             </Field>
           </div>
           <Field label="Notes">

@@ -51,15 +51,6 @@ export function relativeDue(date: string, now = today()) {
   return { tone: "later", text: formatDate(date, !date.startsWith(now.slice(0, 4))) };
 }
 
-export function money(cents: number | null | undefined, exact = false): string {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    maximumFractionDigits: exact ? 2 : 0,
-    minimumFractionDigits: exact && cents! % 100 !== 0 ? 2 : 0,
-  }).format((cents ?? 0) / 100);
-}
-
 export function personName(who: Assignee | string | null | undefined): string {
   if (who === "hannah") return "Hannah";
   if (who === "james") return "James";

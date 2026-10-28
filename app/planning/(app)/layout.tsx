@@ -8,17 +8,11 @@ import { Avatar } from "../ui";
 export default async function AppLayout({ children }: LayoutProps<"/planning">) {
   const me = await requirePerson();
   const now = today();
-  const [mine, openDecisions] = await Promise.all([
-    db()
-      .from("wedding_tasks")
-      .select("id", { count: "exact", head: true })
-      .neq("status", "done")
-      .in("assignee", [me, "both"]),
-    db()
-      .from("wedding_decisions")
-      .select("id", { count: "exact", head: true })
-      .neq("status", "decided"),
-  ]);
+  const mine = await db()
+    .from("wedding_tasks")
+    .select("id", { count: "exact", head: true })
+    .neq("status", "done")
+    .in("assignee", [me, "both"]);
   const days = daysBetween(now, WEDDING_DAY);
 
   return (
@@ -31,7 +25,6 @@ export default async function AppLayout({ children }: LayoutProps<"/planning">) 
         <Nav
           counts={{
             "/tasks": mine.count ?? undefined,
-            "/decisions": openDecisions.count ?? undefined,
           }}
         />
         <div className="pl-side-foot">

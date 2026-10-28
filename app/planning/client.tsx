@@ -11,9 +11,6 @@ const NAV = [
   { href: "/timeline", label: "Timeline" },
   { href: "/board", label: "Board" },
   { href: "/tasks", label: "Tasks" },
-  { href: "/decisions", label: "Decisions" },
-  { href: "/vendors", label: "Vendors" },
-  { href: "/budget", label: "Budget" },
 ];
 
 export function Nav({ counts }: { counts: Record<string, number | undefined> }) {

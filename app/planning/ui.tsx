@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { Assignee, BudgetCategory, Decision, Vendor } from "@/lib/planning/db";
+import type { Assignee } from "@/lib/planning/db";
 import { personName, relativeDue } from "@/lib/planning/format";
 
 export function PageHead({
@@ -50,14 +50,6 @@ const STATUS_LABEL: Record<string, string> = {
   doing: "In progress",
   waiting: "Waiting",
   done: "Done",
-  open: "Open",
-  leaning: "Leaning",
-  decided: "Decided",
-  researching: "Researching",
-  contacted: "Contacted",
-  quoted: "Quoted",
-  booked: "Booked",
-  passed: "Passed",
 };
 
 export function StatusTag({ status }: { status: string }) {
@@ -110,63 +102,6 @@ export function AssigneeSelect({
       <option value="hannah">Hannah</option>
       <option value="james">James</option>
       <option value="both">Both of us</option>
-    </select>
-  );
-}
-
-export function CategorySelect({
-  categories,
-  value,
-}: {
-  categories: BudgetCategory[];
-  value?: string | null;
-}) {
-  return (
-    <select className="pl-select" name="category_id" defaultValue={value ?? ""}>
-      <option value="">No budget category</option>
-      {categories.map((c) => (
-        <option key={c.id} value={c.id}>
-          {c.name}
-        </option>
-      ))}
-    </select>
-  );
-}
-
-export function VendorSelect({
-  vendors,
-  value,
-}: {
-  vendors: Pick<Vendor, "id" | "name">[];
-  value?: string | null;
-}) {
-  return (
-    <select className="pl-select" name="vendor_id" defaultValue={value ?? ""}>
-      <option value="">No vendor</option>
-      {vendors.map((v) => (
-        <option key={v.id} value={v.id}>
-          {v.name}
-        </option>
-      ))}
-    </select>
-  );
-}
-
-export function DecisionSelect({
-  decisions,
-  value,
-}: {
-  decisions: Pick<Decision, "id" | "title">[];
-  value?: string | null;
-}) {
-  return (
-    <select className="pl-select" name="decision_id" defaultValue={value ?? ""}>
-      <option value="">No decision</option>
-      {decisions.map((d) => (
-        <option key={d.id} value={d.id}>
-          {d.title}
-        </option>
-      ))}
     </select>
   );
 }

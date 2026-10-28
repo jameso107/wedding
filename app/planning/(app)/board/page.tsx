@@ -14,20 +14,13 @@ const WHO = [
 
 const DONE_SHOWN = 12;
 
-type Row = Task & {
-  vendor: { name: string } | null;
-  decision: { title: string } | null;
-};
-
 export default async function BoardPage({ searchParams }: PageProps<"/planning/board">) {
   const me = await requirePerson();
   const params = await searchParams;
   const who = WHO.some(([k]) => k === params.who) ? String(params.who) : "all";
   const person = who === "me" ? me : who;
 
-  const all = await rows<Row[]>(
-    db().from("wedding_tasks").select("*, vendor:wedding_vendors(name), decision:wedding_decisions(title)"),
-  );
+  const all = await rows<Task[]>(db().from("wedding_tasks").select("*"));
   const tasks = all.filter(
     (t) => who === "all" || t.assignee === person || t.assignee === "both",
   );
@@ -44,7 +37,7 @@ export default async function BoardPage({ searchParams }: PageProps<"/planning/b
     status: t.status,
     assignee: t.assignee,
     due_date: t.due_date,
-    context: t.vendor?.name ?? (t.decision ? `Decision: ${t.decision.title}` : null),
+    context: t.notes,
   }));
   const inFlight = tasks.filter((t) => t.status === "doing" || t.status === "waiting").length;
 

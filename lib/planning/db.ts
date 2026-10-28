@@ -4,13 +4,6 @@ import type { TaskStatus } from "./stages";
 
 export type { TaskStatus };
 export type Assignee = "hannah" | "james" | "both";
-export type VendorStatus =
-  | "researching"
-  | "contacted"
-  | "quoted"
-  | "booked"
-  | "passed";
-export type DecisionStatus = "open" | "leaning" | "decided";
 
 export type Task = {
   id: string;
@@ -25,52 +18,6 @@ export type Task = {
   created_by: string | null;
   completed_at: string | null;
   created_at: string;
-};
-
-export type Decision = {
-  id: string;
-  title: string;
-  context: string | null;
-  options: string | null;
-  status: DecisionStatus;
-  outcome: string | null;
-  rationale: string | null;
-  owner: Assignee | null;
-  decide_by: string | null;
-  decided_on: string | null;
-  updated_at: string;
-};
-
-export type Vendor = {
-  id: string;
-  name: string;
-  service: string | null;
-  category_id: string | null;
-  status: VendorStatus;
-  owner: Assignee | null;
-  contact_name: string | null;
-  email: string | null;
-  phone: string | null;
-  website: string | null;
-  quote_cents: number | null;
-  notes: string | null;
-};
-
-export type BudgetCategory = {
-  id: string;
-  name: string;
-  planned_cents: number;
-  sort: number;
-};
-
-export type Payment = {
-  id: string;
-  label: string;
-  vendor_id: string | null;
-  category_id: string | null;
-  amount_cents: number;
-  due_date: string | null;
-  paid_on: string | null;
 };
 
 export type Activity = {

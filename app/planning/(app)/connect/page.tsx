@@ -10,10 +10,10 @@ export const metadata = { title: "Connect Claude" };
 const PROMPTS = [
   "What’s on my plate this month?",
   "Replace the starter tasks with our real list: …",
-  "We booked Sarah Lee Photography for $4,800 with a $1,000 deposit due Dec 1. Add her and the deposit.",
+  "Add a task for James to book the photographer, starting next week and due Dec 15.",
   "Move everything about invitations two weeks later.",
-  "We decided on a lakeside ceremony with the ballroom as the rain plan. Log it and add the follow-up tasks for James.",
-  "How are we tracking against the budget?",
+  "Put the florist task in Waiting, they haven’t replied.",
+  "What’s overdue, and who has it?",
 ];
 
 export default async function ConnectPage() {
@@ -33,7 +33,7 @@ export default async function ConnectPage() {
             Plan out loud, <em>{personName(me)}</em>
           </>
         }
-        lede="Add the planning board to your Claude and it can read and change everything here: tasks, dates, decisions, vendors, and the budget. Anything it does shows up in the activity feed with your name."
+        lede="Add the planning board to your Claude and it can read and change your tasks: add them, assign them, set dates, and move them through the board. Anything it does shows up in the activity feed with your name."
       />
 
       <section className="pl-card pl-stack" style={{ gap: 18 }}>

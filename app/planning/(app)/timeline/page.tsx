@@ -1,13 +1,12 @@
 import Link from "next/link";
 import type { CSSProperties } from "react";
 import { requirePerson } from "@/lib/planning/auth";
-import { db, rows, type Decision, type Payment, type Task } from "@/lib/planning/db";
+import { db, rows, type Task } from "@/lib/planning/db";
 import {
   WEDDING_DAY,
   addDays,
   daysBetween,
   formatDate,
-  money,
   personName,
   today,
 } from "@/lib/planning/format";
@@ -31,8 +30,6 @@ type Bar = {
   tone: string;
   done: boolean;
   late: boolean;
-  nested?: boolean;
-  note?: string;
 };
 
 function firstOfMonth(date: string) {
@@ -50,21 +47,14 @@ export default async function TimelinePage({ searchParams }: PageProps<"/plannin
   const who = WHO.some(([k]) => k === params.who) ? String(params.who) : "all";
   const now = today();
 
-  const [allTasks, decisions, payments] = await Promise.all([
-    rows<Task[]>(db().from("wedding_tasks").select("*")),
-    rows<Decision[]>(db().from("wedding_decisions").select("*").order("decide_by", { nullsFirst: false })),
-    rows<(Payment & { vendor: { name: string } | null })[]>(
-      db().from("wedding_payments").select("*, vendor:wedding_vendors(name)").is("paid_on", null),
-    ),
-  ]);
+  const allTasks = await rows<Task[]>(db().from("wedding_tasks").select("*"));
 
-  const mine = (a: string | null) => who === "all" || a === who || a === "both";
   const tasks = allTasks
-    .filter((t) => t.due_date && mine(t.assignee))
+    .filter((t) => t.due_date && (who === "all" || t.assignee === who || t.assignee === "both"))
     .sort((a, b) => (a.start_date ?? a.due_date!).localeCompare(b.start_date ?? b.due_date!));
   const undated = allTasks.filter((t) => !t.due_date && t.status !== "done").length;
 
-  const taskBar = (t: Task, nested = false): Bar => ({
+  const bar = (t: Task): Bar => ({
     key: t.id,
     href: `/tasks/${t.id}`,
     label: t.title,
@@ -74,51 +64,18 @@ export default async function TimelinePage({ searchParams }: PageProps<"/plannin
     tone: t.assignee ?? "none",
     done: t.status === "done",
     late: t.status !== "done" && t.due_date! < now,
-    nested,
   });
 
-  const decisionRows: Bar[] = [];
-  for (const d of decisions) {
-    const linked = tasks.filter((t) => t.decision_id === d.id);
-    if (!mine(d.owner) && !linked.length) continue;
-    const end = d.decided_on ?? d.decide_by;
-    if (end) {
-      decisionRows.push({
-        key: d.id,
-        href: `/decisions/${d.id}`,
-        label: d.title,
-        sub:
-          d.status === "decided"
-            ? `Decided ${formatDate(end)}`
-            : `${personName(d.owner)} · decide by ${formatDate(end)}`,
-        // Open decisions count down from today to their decide-by date.
-        start: d.status !== "decided" && now < end ? now : null,
-        end,
-        tone: d.status === "decided" ? "decided" : "decision",
-        done: d.status === "decided",
-        late: d.status !== "decided" && end < now,
-        note: d.status === "decided" ? (d.outcome ?? undefined) : undefined,
-      });
-    }
-    decisionRows.push(...linked.map((t) => taskBar(t, true)));
-  }
-  const taskRows = tasks.filter((t) => !t.decision_id || !decisions.some((d) => d.id === t.decision_id)).map((t) => taskBar(t));
-  const moneyRows: Bar[] = payments
-    .filter((p) => p.due_date)
-    .map((p) => ({
-      key: p.id,
-      href: p.vendor_id ? `/vendors/${p.vendor_id}` : "/budget",
-      label: p.vendor ? `${p.vendor.name}: ${p.label}` : p.label,
-      sub: `${money(p.amount_cents, true)} · due ${formatDate(p.due_date!)}`,
-      start: null,
-      end: p.due_date!,
-      tone: "money",
-      done: false,
-      late: p.due_date! < now,
-    }));
+  // One lane per owner, so it's easy to see who's carrying what, when.
+  const lanes = [
+    { title: "Hannah", rows: tasks.filter((t) => t.assignee === "hannah").map(bar) },
+    { title: "James", rows: tasks.filter((t) => t.assignee === "james").map(bar) },
+    { title: "Both of us", rows: tasks.filter((t) => t.assignee === "both").map(bar) },
+    { title: "Unassigned", rows: tasks.filter((t) => !t.assignee).map(bar) },
+  ].filter((lane) => lane.rows.length);
 
   // Range: the month we're in through the end of the wedding month.
-  const dates = [now, WEDDING_DAY, ...[...decisionRows, ...taskRows, ...moneyRows].flatMap((r) => [r.start ?? r.end, r.end])];
+  const dates = [now, WEDDING_DAY, ...tasks.flatMap((t) => [t.start_date ?? t.due_date!, t.due_date!])];
   const rangeStart = firstOfMonth(dates.reduce((a, b) => (a < b ? a : b)));
   const rangeEnd = nextMonth(dates.reduce((a, b) => (a > b ? a : b)));
   const span = daysBetween(rangeStart, rangeEnd);
@@ -146,7 +103,7 @@ export default async function TimelinePage({ searchParams }: PageProps<"/plannin
             {weeksLeft} weeks, <em>start to aisle</em>
           </>
         }
-        lede="Every decision and task laid out against the calendar. Bars run from start to due date; diamonds are single-day deadlines. Click anything to open it."
+        lede="Every task laid out against the calendar, grouped by who owns it. Bars run from start to due date; diamonds are single-day deadlines. Click anything to open it."
       >
         <Seg path="/timeline" param="who" options={WHO} value={who} other={{}} />
       </PageHead>
@@ -156,9 +113,7 @@ export default async function TimelinePage({ searchParams }: PageProps<"/plannin
         <span><i className="pl-gkey pl-gbar-james" /> James</span>
         <span><i className="pl-gkey pl-gbar-both" /> Both</span>
         <span><i className="pl-gkey pl-gbar-none" /> Unassigned</span>
-        <span><i className="pl-gkey pl-gbar-decision" /> Open decision</span>
-        <span><i className="pl-gkey pl-gbar-decided" /> Decided</span>
-        <span><i className="pl-gkey pl-gmile-key" /> Deadline / payment</span>
+        <span><i className="pl-gkey pl-gmile-key" /> Deadline</span>
       </div>
 
       <div className="pl-gantt-scroll">
@@ -189,9 +144,11 @@ export default async function TimelinePage({ searchParams }: PageProps<"/plannin
               <i className="pl-gantt-wedding" style={{ left: "var(--wedding)" }} />
             </div>
 
-            <Section title="Decisions" rows={decisionRows} at={at} empty="No decisions with a date yet." />
-            <Section title="Tasks" rows={taskRows} at={at} empty="No dated tasks here." />
-            {moneyRows.length ? <Section title="Money due" rows={moneyRows} at={at} /> : null}
+            {lanes.length ? (
+              lanes.map((lane) => <Section key={lane.title} title={lane.title} rows={lane.rows} at={at} />)
+            ) : (
+              <Section title="Tasks" rows={[]} at={at} empty="No dated tasks here." />
+            )}
           </div>
         </div>
       </div>
@@ -229,17 +186,13 @@ function Section({
         rows.map((r) => {
           const end = at(addDays(r.end, 1));
           const start = r.start ? at(r.start) : null;
-          const cls = [
-            r.done ? "is-done" : "",
-            r.late ? "is-late" : "",
-            r.nested ? "is-nested" : "",
-          ].join(" ");
-          const tip = `${r.label}\n${r.sub}${r.note ? `\n→ ${r.note}` : ""}`;
+          const cls = [r.done ? "is-done" : "", r.late ? "is-late" : ""].join(" ");
+          const tip = `${r.label}\n${r.sub}`;
           return (
             <div key={r.key} className={`pl-gantt-row ${cls}`}>
               <Link href={r.href} className="pl-gantt-label">
                 <span className="pl-row-title">{r.label}</span>
-                <span className="pl-row-sub">{r.note ? `→ ${r.note}` : r.sub}</span>
+                <span className="pl-row-sub">{r.sub}</span>
               </Link>
               <div className="pl-gantt-track">
                 {start !== null && end - start > 0.4 ? (
