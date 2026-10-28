@@ -374,6 +374,10 @@
   text-decoration: none;
 }
 
+.pl-stats-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 a.pl-stat:hover {
   background: var(--sand);
 }
@@ -548,6 +552,10 @@ a.pl-row-main:hover .pl-row-title {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.pl-row.pl-row-rsvp {
+  grid-template-columns: minmax(0, 1fr) auto;
 }
 
 .pl-row.is-done .pl-row-title {
@@ -1720,5 +1728,13 @@ a.pl-row-main:hover .pl-row-title {
   .pl-row > .pl-row-meta {
     grid-column: 2;
     justify-content: flex-start;
+  }
+
+  .pl-row.pl-row-rsvp {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .pl-stats-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }

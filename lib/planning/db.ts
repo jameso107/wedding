@@ -20,6 +20,14 @@ export type Task = {
   created_at: string;
 };
 
+// Early RSVPs from the public save-the-date page (app/rsvp-action.ts).
+export type Rsvp = {
+  id: string;
+  name: string;
+  attending: boolean;
+  created_at: string;
+};
+
 export type Activity = {
   id: number;
   actor: string;
