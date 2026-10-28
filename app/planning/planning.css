@@ -1289,10 +1289,9 @@ a.pl-row-main:hover .pl-row-title {
 /* ---- kanban board ------------------------------------------------------- */
 
 .pl-kanban {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(220px, 1fr));
+  display: flex;
   gap: 12px;
-  align-items: start;
+  align-items: flex-start;
   overflow-x: auto;
   padding-bottom: 8px;
 }
@@ -1300,6 +1299,8 @@ a.pl-row-main:hover .pl-row-title {
 .pl-kanban-col {
   display: flex;
   flex-direction: column;
+  flex: 1 1 0;
+  min-width: 220px;
   min-height: 60vh;
   padding: 12px 10px 14px;
   border-radius: 8px;
@@ -1315,11 +1316,81 @@ a.pl-row-main:hover .pl-row-title {
 }
 
 .pl-kanban-head {
+  padding: 0 2px;
+}
+
+.pl-kanban-toggle {
+  all: unset;
+  box-sizing: border-box;
   display: flex;
   align-items: baseline;
-  justify-content: space-between;
-  gap: 8px;
-  padding: 0 4px;
+  gap: 6px;
+  width: 100%;
+  padding: 2px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.pl-kanban-toggle:hover {
+  background: rgb(29 52 66 / 0.05);
+}
+
+.pl-kanban-toggle:focus-visible {
+  outline: 2px solid var(--lake);
+  outline-offset: 1px;
+}
+
+.pl-kanban-toggle svg {
+  flex: none;
+  align-self: center;
+  width: 12px;
+  height: 12px;
+  color: var(--muted);
+  transition: transform 0.25s var(--ease);
+}
+
+.pl-kanban-toggle h2 {
+  flex: 1;
+}
+
+.pl-kanban-count {
+  margin-left: auto;
+}
+
+/* Collapsed: a slim strip with the name running down it. Still a drop target. */
+.pl-kanban-col.is-collapsed {
+  flex: 0 0 52px;
+  min-width: 52px;
+  padding: 10px 4px;
+  cursor: pointer;
+}
+
+.pl-kanban-col.is-collapsed .pl-kanban-toggle {
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  height: 100%;
+  min-height: calc(60vh - 24px);
+  padding: 4px 0;
+}
+
+.pl-kanban-col.is-collapsed .pl-kanban-toggle svg {
+  transform: rotate(180deg);
+}
+
+.pl-kanban-col.is-collapsed .pl-kanban-toggle h2 {
+  flex: none;
+  writing-mode: vertical-rl;
+  white-space: nowrap;
+}
+
+.pl-kanban-col.is-collapsed .pl-kanban-head h2::before {
+  margin: 0 0 8px;
+}
+
+.pl-kanban-col.is-collapsed .pl-kanban-count {
+  order: -1;
+  margin: 0;
 }
 
 .pl-kanban-head h2 {
@@ -1471,15 +1542,19 @@ a.pl-row-main:hover .pl-row-title {
 
 @media (max-width: 820px) {
   .pl-kanban {
-    grid-template-columns: repeat(5, minmax(240px, 82vw));
     margin-right: -16px;
     padding-right: 16px;
     scroll-snap-type: x mandatory;
   }
 
   .pl-kanban-col {
+    flex: 0 0 min(82vw, 320px);
     min-height: 50vh;
     scroll-snap-align: start;
+  }
+
+  .pl-kanban-col.is-collapsed .pl-kanban-toggle {
+    min-height: calc(50vh - 24px);
   }
 }
 

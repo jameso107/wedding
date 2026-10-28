@@ -12,6 +12,9 @@ export type TaskStatus = (typeof TASK_STAGES)[number]["id"];
 
 export const TASK_STATUSES = TASK_STAGES.map((s) => s.id) as [TaskStatus, ...TaskStatus[]];
 
+// Which Board columns this browser has folded away (comma-separated ids).
+export const COLLAPSED_COOKIE = "planning_board_collapsed";
+
 export function stageLabel(status: string): string {
   return TASK_STAGES.find((s) => s.id === status)?.label ?? status;
 }

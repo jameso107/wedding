@@ -19,7 +19,7 @@ import {
   type DragStartEvent,
 } from "@dnd-kit/core";
 import type { Assignee } from "@/lib/planning/db";
-import { TASK_STAGES, type TaskStatus } from "@/lib/planning/stages";
+import { COLLAPSED_COOKIE, TASK_STAGES, type TaskStatus } from "@/lib/planning/stages";
 import type { Person } from "@/lib/planning/session";
 import { createTask, moveTask } from "./actions";
 import { SubmitButton } from "./client";
@@ -42,14 +42,20 @@ const collision: CollisionDetection = (args) => {
   return hits.length ? hits : rectIntersection(args);
 };
 
+function rememberCollapsed(ids: TaskStatus[]) {
+  document.cookie = `${COLLAPSED_COOKIE}=${ids.join(",")}; path=/; max-age=31536000; samesite=lax`;
+}
+
 export function KanbanBoard({
   cards,
   me,
   doneHidden,
+  initialCollapsed,
 }: {
   cards: BoardCard[];
   me: Person;
   doneHidden: number;
+  initialCollapsed: TaskStatus[];
 }) {
   const [board, applyMove] = useOptimistic(cards, (state, move: Move) =>
     state.map((c) =>
@@ -63,6 +69,16 @@ export function KanbanBoard({
   const justDragged = useRef(false);
   // A stable id keeps dnd-kit's aria-describedby the same on server and client.
   const dndId = useId();
+  const [collapsed, setCollapsed] = useState(() => new Set(initialCollapsed));
+
+  // Remembered per browser in a cookie, so the server renders the same layout.
+  function toggle(id: TaskStatus) {
+    const next = new Set(collapsed);
+    if (next.has(id)) next.delete(id);
+    else next.add(id);
+    setCollapsed(next);
+    rememberCollapsed([...next]);
+  }
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
@@ -109,7 +125,15 @@ export function KanbanBoard({
             .filter((c) => c.status === stage.id)
             .sort((a, b) => (a.due_date ?? "9999").localeCompare(b.due_date ?? "9999"));
           return (
-            <Column key={stage.id} id={stage.id} label={stage.label} hint={stage.hint} count={list.length}>
+            <Column
+              key={stage.id}
+              id={stage.id}
+              label={stage.label}
+              hint={stage.hint}
+              count={list.length}
+              collapsed={collapsed.has(stage.id)}
+              onToggle={() => toggle(stage.id)}
+            >
               {stage.id === "backlog" ? <QuickAdd /> : null}
               {list.map((c) => (
                 <Card key={c.id} card={c} justDragged={justDragged} />
@@ -138,23 +162,48 @@ function Column({
   label,
   hint,
   count,
+  collapsed,
+  onToggle,
   children,
 }: {
   id: TaskStatus;
   label: string;
   hint: string;
   count: number;
+  collapsed: boolean;
+  onToggle: () => void;
   children: React.ReactNode;
 }) {
+  // Collapsed columns stay drop targets, so cards can still be dragged in.
   const { setNodeRef, isOver } = useDroppable({ id });
+  const bodyId = `kanban-${id}`;
   return (
-    <section ref={setNodeRef} className={`pl-kanban-col pl-kanban-${id} ${isOver ? "is-over" : ""}`}>
+    <section
+      ref={setNodeRef}
+      className={`pl-kanban-col pl-kanban-${id} ${isOver ? "is-over" : ""} ${collapsed ? "is-collapsed" : ""}`}
+    >
       <header className="pl-kanban-head">
-        <h2>{label}</h2>
-        <span className="pl-small">{count}</span>
+        <button
+          type="button"
+          className="pl-kanban-toggle"
+          onClick={onToggle}
+          aria-expanded={!collapsed}
+          aria-controls={bodyId}
+          title={collapsed ? `Expand ${label}` : `Collapse ${label}`}
+        >
+          <svg viewBox="0 0 12 12" aria-hidden="true">
+            <path d="M7.5 2.5 4 6l3.5 3.5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+          <h2>{label}</h2>
+          <span className="pl-small pl-kanban-count">{count}</span>
+        </button>
       </header>
-      <p className="pl-kanban-hint">{hint}</p>
-      <div className="pl-kanban-cards">{children}</div>
+      {collapsed ? null : (
+        <div id={bodyId}>
+          <p className="pl-kanban-hint">{hint}</p>
+          <div className="pl-kanban-cards">{children}</div>
+        </div>
+      )}
     </section>
   );
 }
