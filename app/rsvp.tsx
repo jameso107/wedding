@@ -68,11 +68,11 @@ export function Rsvp() {
               <legend>Will you be there?</legend>
               <label>
                 <input type="radio" name="attending" value="yes" required />
-                <span>Joyfully accepts</span>
+                <span>I&rsquo;m planning on it!</span>
               </label>
               <label>
                 <input type="radio" name="attending" value="no" />
-                <span>Regretfully declines</span>
+                <span>I can&rsquo;t make it</span>
               </label>
             </fieldset>
 
